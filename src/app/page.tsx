@@ -1,69 +1,98 @@
+
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 
 export default function Home() {
+  const [photos, setPhotos] = useState<File[]>([]);
+
+  function handlePhotos(files: FileList | null) {
+    if (!files) return;
+    setPhotos((prev) => [...prev, ...Array.from(files)]);
+  }
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="min-h-screen bg-[#F8F6F2] px-4 py-8 text-[#292724]">
+      <div className="mx-auto max-w-3xl">
+        <header className="mb-10">
+          <p className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-stone-500">
+            Your personal resale assistant
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
+          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            Clothing Resale Studio
+          </h1>
+          <p className="mt-3 text-stone-600">
+            Photograph it. Style it. List it.
+          </p>
+        </header>
+
+        <section className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-8">
+          <h2 className="text-xl font-semibold">Add a garment</h2>
+          <p className="mt-2 text-sm text-stone-500">
+            Take photos of the front, back, labels, and details.
+          </p>
+
+          <label className="mt-6 flex min-h-44 cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-stone-300 bg-stone-50 p-6 text-center active:bg-stone-100">
+            <span className="text-3xl">📸</span>
+            <span className="mt-3 font-medium">
+              Take or upload photos
+            </span>
+            <span className="mt-1 text-sm text-stone-500">
+              Select multiple images
+            </span>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              className="sr-only"
+              onChange={(e) => handlePhotos(e.target.files)}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+          </label>
+
+          {photos.length > 0 && (
+            <div className="mt-6">
+              <h3 className="mb-3 text-sm font-medium">
+                Your photos ({photos.length})
+              </h3>
+
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {photos.map((photo, index) => (
+                  <PhotoPreview
+                    key={`${photo.name}-${index}`}
+                    file={photo}
+                  />
+                ))}
+              </div>
+
+              <button
+                className="mt-6 w-full rounded-xl bg-stone-900 px-5 py-4 font-medium text-white disabled:opacity-50"
+                onClick={() =>
+                  alert("Next up: AI garment analysis!")
+                }
+              >
+                Continue →
+              </button>
+            </div>
+          )}
+        </section>
+      </div>
+    </main>
+  );
+}
+
+function PhotoPreview({ file }: { file: File }) {
+  const [url] = useState(() => URL.createObjectURL(file));
+
+  return (
+    <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-stone-100">
+      <Image
+        src={url}
+        alt={file.name}
+        fill
+        unoptimized
+        className="object-cover"
+      />
     </div>
   );
 }
