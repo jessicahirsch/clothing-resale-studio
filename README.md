@@ -1,36 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Clothing Resale Studio
 
-## Getting Started
+Mobile-first Next.js app with private, local photo storage. No database or cloud service.
 
-First, run the development server:
+## Run locally
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Use Node.js 22.18+ (native TypeScript tests), run `npm install`, copy `.env.example` to `.env.local`, and set `STUDIO_PASSWORD` to a unique random password of at least 16 characters. Run `npm run dev -- --hostname 127.0.0.1` and open http://localhost:3000. Enter that password to access uploads and saved garments. Missing/short server passwords disable all garment API access. Passwords are kept only in browser memory, never URLs or browser storage.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For iPhone access on a trusted private network, bind to your LAN interface and browse to the computer's LAN address. Use HTTPS through a trusted local TLS setup when accessing across a network: HTTP transmits the password and photos without encryption. Do not expose this local app through public tunnels or port forwarding. Authentication applies to listing, uploads, and photo downloads; uploads additionally require the exact same Origin and reject cross-site requests.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Select multiple photos using Safari's photo picker or camera, then save one garment per batch. Supports JPEG, PNG, WebP, and HEIC signatures; limits are 12 photos, 20 MB per photo, and 65 MB per multipart request. Originals are preserved without conversion (including EXIF metadata). HEIC display depends on the browser; download originals if no preview is available. Signature checking rejects unsupported content but is not a full image decoder. No image processing or marketplace publishing occurs.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Storage
 
-## Learn More
+`data/garments/{uuid}/listing.json` records the garment ID, creation time, and each photo's generated filename, original name, MIME type, and byte size. Original bytes live in `originals/`. Generated names prevent filename traversal. Uploads are validated first, written to a private staging directory, and atomically renamed into the gallery only after all writes succeed. Failed writes clean up staging; interrupted processes may leave hidden `.upload-*` directories, which the gallery ignores. Malformed listings are skipped with server diagnostics.
 
-To learn more about Next.js, take a look at the following resources:
+Keep `data/` on persistent local disk and back it up privately. It, exports, and `.env*` credentials are gitignored; `.env.example` is safe to track. Photos are served through authenticated routes, never `public/`. This app is designed for one trusted household/studio, not multi-tenant or public hosting.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Checks
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- `npm run lint`
+- `npm test` (isolated temporary storage; no personal photos used)
+- `npx tsc --noEmit`
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Manual browser check: open the studio, unlock, select photos, remove one, save, reload/unlock and verify the garment and original downloads remain. On iPhone Safari test camera/photo-library selection and HEIC fallback. Verify incorrect passwords cannot list, save, or download photos.
