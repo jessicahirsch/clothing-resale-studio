@@ -23,3 +23,7 @@ Keep `data/` on persistent local disk and back it up privately. It, exports, and
 - `npx tsc --noEmit`
 
 Manual browser check: open the studio, unlock, select photos, remove one, save, reload/unlock and verify the garment and original downloads remain. On iPhone Safari test camera/photo-library selection and HEIC fallback. Verify incorrect passwords cannot list, save, or download photos.
+
+## Approved collage template
+
+CRS-0001 is the canonical five-photo reference. See [the reference and template guide](references/README.md) for source requirements, fixed layout, preview, export, and visual regression checks. Collage exports use a supplied approved main image and four original user photographs; there is no image generation.

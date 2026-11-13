@@ -3,6 +3,8 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { ApprovedReference } from "../components/approved-reference";
+import { CollagePreview } from "../components/collage-preview";
 import type { Garment } from "../lib/garments";
 
 export default function Home() {
@@ -74,6 +76,7 @@ export default function Home() {
         </form>
         {error && <p role="alert" className="mb-4 rounded-lg bg-red-50 p-4 text-red-800">{error}</p>}
         <p role="status" className="mb-4 text-sm text-stone-600">{status}</p>
+        {unlocked && <ApprovedReference password={password} />}
         <section className="rounded-2xl border border-stone-200 bg-white p-5 shadow-sm sm:p-8">
           <h2 className="text-xl font-semibold">Add a garment</h2>
           <p className="mt-2 text-sm text-stone-500">
@@ -113,6 +116,7 @@ export default function Home() {
                 ))}
               </div>
 
+              <CollagePreview key={photos.map(photo => `${photo.name}:${photo.size}:${photo.lastModified}`).join("|")} photos={photos} />
               <button
                 className="mt-6 w-full rounded-xl bg-stone-900 px-5 py-4 font-medium text-white disabled:opacity-50"
                 disabled={busy || !unlocked}
