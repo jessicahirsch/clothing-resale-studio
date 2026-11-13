@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { authorize, failure, imageType, root, UploadError, validId } from '../../../../../../lib/garments';
-export const runtime = 'nodejs';
 export async function GET(request: Request, context: { params: Promise<{ id: string; filename: string }> }) {
   try {
     authorize(request);

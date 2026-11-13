@@ -1,7 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { authorize, failure } from '../../../../lib/garments';
-export const runtime = 'nodejs';
 export async function GET(request: Request) {
   try {
     authorize(request);
