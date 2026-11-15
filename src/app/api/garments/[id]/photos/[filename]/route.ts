@@ -1,5 +1,6 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
+import { unstable_rethrow } from 'next/navigation';
 import { authorize, failure, imageType, root, UploadError, validId } from '../../../../../../lib/garments';
 export async function GET(request: Request, context: { params: Promise<{ id: string; filename: string }> }) {
   try {
@@ -10,5 +11,5 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     try { bytes = await readFile(path.join(root(), id, 'originals', filename)); }
     catch (error) { if ((error as NodeJS.ErrnoException).code === 'ENOENT') throw new UploadError('Photo not found.', 404); throw error; }
     return new Response(bytes, { headers: { 'Content-Type': imageType(bytes)?.type ?? 'application/octet-stream', 'Cache-Control': 'no-store', 'X-Content-Type-Options': 'nosniff', 'Content-Disposition': 'inline' } });
-  } catch (error) { return failure(error); }
+  } catch (error) { unstable_rethrow(error); return failure(error); }
 }
