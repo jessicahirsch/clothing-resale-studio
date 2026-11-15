@@ -8,7 +8,7 @@ Use Node.js 22.18+ (native TypeScript tests), run `npm install`, copy `.env.exam
 
 For iPhone access on a trusted private network, bind to your LAN interface and browse to the computer's LAN address. Use HTTPS through a trusted local TLS setup when accessing across a network: HTTP transmits the password and photos without encryption. Do not expose this local app through public tunnels or port forwarding. Authentication applies to listing, uploads, and photo downloads; uploads additionally require the exact same Origin and reject cross-site requests.
 
-Select multiple photos using Safari's photo picker or camera, then save one garment per batch. Supports JPEG, PNG, WebP, and HEIC signatures; limits are 12 photos, 20 MB per photo, and 65 MB per multipart request. Originals are preserved without conversion (including EXIF metadata). HEIC display depends on the browser; download originals if no preview is available. Signature checking rejects unsupported content but is not a full image decoder. No image processing or marketplace publishing occurs.
+Select multiple photos using the browser's photo picker or camera, then save one garment per batch. Supports JPEG, PNG, WebP, and HEIC signatures; limits are 12 photos, 20 MB per photo, and 65 MB per multipart request. Originals are preserved without conversion (including EXIF metadata). HEIC display depends on the browser; download originals if no preview is available. Signature checking rejects unsupported content but is not a full image decoder. No image processing or marketplace publishing occurs.
 
 ## Storage
 
@@ -22,8 +22,12 @@ Keep `data/` on persistent local disk and back it up privately. It, exports, and
 - `npm test` (isolated temporary storage; no personal photos used)
 - `npx tsc --noEmit`
 
-Manual browser check: open the studio, unlock, select photos, remove one, save, reload/unlock and verify the garment and original downloads remain. On iPhone Safari test camera/photo-library selection and HEIC fallback. Verify incorrect passwords cannot list, save, or download photos.
+Manual browser check: open the studio, unlock, select photos, remove one, save, reload/unlock and verify the garment and original downloads remain. On iPhone Chrome test camera/photo-library selection and HEIC fallback. Verify incorrect passwords cannot list, save, or download photos.
 
 ## Approved collage template
 
 CRS-0001 is the canonical five-photo reference. See [the reference and template guide](references/README.md) for source requirements, fixed layout, preview, export, and visual regression checks. Collage exports use a supplied approved main image and four original user photographs; there is no image generation.
+
+## Product workflow specification
+
+See [the first-listing workflow specification](docs/listing-workflow-spec.md) for the planned guided intake, fact extraction, hero approval, listing review, and multi-marketplace publishing paths for Poshmark, eBay, Depop, and future adapters. These are planned capabilities; current marketplace publishing is not implemented.
