@@ -148,13 +148,13 @@ Local locking cannot eliminate simultaneous purchases on independent marketplace
 
 ## Delivery sequence
 
-1. **Guided intake and resumable item drafts.** Role-based upload cards, add photos to an existing garment, durable item code/roles, backward-compatible JSON updates, condition/flaw capture, desktop/iPhone Chrome validation.
+1. **Guided intake and resumable item drafts — implemented, device QA pending.** Role-based upload cards, add photos to an existing garment, durable item code/roles, backward-compatible JSON updates, and condition/flaw capture are implemented. Desktop and physical iPhone Chrome validation remain before release approval.
 2. **Fact extraction and hero review.** Choose/configure providers, record evidence and image versions, explicit hero approval/refinement, original-only path, robust failed-processing recovery.
 3. **Saved collage and listing review.** Persist assignments/crops, in-app export, canonical draft plus destination-specific editable drafts, marketplace/account selection, price overrides, and independent revision-bound approvals.
 4. **Marketplace router and connectors.** Implement the shared adapter contract and dispatcher, then deliver verified account connections and publishers for Poshmark, eBay, and Depop independently. Poshmark remains the first requested live post; do not let its access dependency prevent preparing other adapters. Display readiness separately. Each publisher needs duplicate prevention, uncertain-outcome reconciliation, and confirmed live URLs.
 5. **Cross-posting and sale response.** Approve multiple destination revisions, track partial success, and implement verified sale detection/manual sold marking plus supported ending of other live listings. Add additional marketplaces through the same adapter contract.
 
-Each implementation PR gets focused tests and review; documentation does not imply those capabilities already exist. Current code already has original storage, password-protected APIs, a saved gallery, an ephemeral collage preview, and CLI export. Extraction, hero generation, durable slot assignments, listing revision review, and marketplace publishing remain to be implemented.
+Each implementation PR gets focused tests and review; documentation does not imply later capabilities already exist. Current code has original storage, password-protected APIs, guided role-based intake, resumable drafts, condition/flaw review, a saved gallery, an ephemeral collage preview, and CLI export. Extraction, hero generation, durable collage slot assignments, listing revision review, and marketplace publishing remain to be implemented.
 
 ## Acceptance criteria for the first complete listing
 
